@@ -7,6 +7,14 @@ pipeline {
             git branch: 'main', url: 'https://github.com/sabdulramoni/Jenkins-Simple-Build.git'
             }
         }
+        stage("build & SonarQube analysis") {
+            agent any
+            steps {
+              withSonarQubeEnv('sonar') {
+                sh 'mvn -f SampleWebApp/pom.xml clean package sonar:sonar'
+              }
+            }
+          }
         stage('BUILDING WITH MAVEN') {
             steps {
                  sh 'cd SampleWebApp && mvn clean install'
