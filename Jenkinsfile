@@ -2,12 +2,12 @@ pipeline {
     agent any
 
     stages {
-        stage('CLONING FROM GIT') {
+        stage('Checkout from GIT') {
             steps {
             git branch: 'main', url: 'https://github.com/sabdulramoni/Jenkins-Simple-Build.git'
             }
         }
-        stage("build & SonarQube analysis") {
+        stage("SonarQube analysis") {
             agent any
             steps {
               withSonarQubeEnv('sonar') {
@@ -20,7 +20,7 @@ pipeline {
                  sh 'cd SampleWebApp && mvn clean install'
             }
         }
-        stage('DEPLOYING TO TOMCAT') {
+        stage('DEPLOY TO TOMCAT') {
             steps {
              deploy adapters: [tomcat9(credentialsId: 'tomcat-id', path: '', url: 'http://3.129.208.122:8080/')], contextPath: 'myapp', war: '**/*.war'
             }
