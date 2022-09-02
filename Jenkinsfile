@@ -15,6 +15,13 @@ pipeline {
               }
             }
           }
+        stage("Quality Gate") {
+            steps {
+              timeout(time: 1, unit: 'HOURS') {
+                waitForQualityGate abortPipeline: true
+              }
+            }
+          }
         stage('BUILDING WITH MAVEN') {
             steps {
                  sh 'cd SampleWebApp && mvn clean install'
